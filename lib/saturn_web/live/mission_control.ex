@@ -10,7 +10,9 @@ defmodule SaturnWeb.Live.MissionControl do
   def render(assigns) do
     ~H"""
     <div class="m-8">
-      <div class="btn btn-xl btn-info" phx-click="add-destination">Add Destination</div>
+      <div id="new_destination" class="btn btn-xl btn-info" phx-click="add-destination">
+        Add Destination
+      </div>
       <div class="flex w-full flex-row flex-wrap">
         <%= for planet <- Map.values(@planets) do %>
           <.render_destination planet={planet} />
@@ -28,17 +30,11 @@ defmodule SaturnWeb.Live.MissionControl do
     """
   end
 
-  # "destination" => "earth",
-  # "destination_type" => "launch",
-  # "id" => "b11e6722-f93d-4a29-9b7f-f20f689a6112",
-  # "mass" => "1"
-
   # if this gets too big, I'd move it to separate,
   # resuable component
   def render_destination(assigns) do
-    # TODO change mass and destination to forms
     ~H"""
-    <div id={"destination-#{@planet["planet_id"]}"} class="card bg-base-100 w-96 shadow-sm m-8 p-4">
+    <div id="destination_form" class="card bg-base-100 w-96 shadow-sm m-8 p-4">
       <.form :let={p} for={@planet} phx-change="update-destination">
         <div class="flex flex-col gap-2">
           <.input
@@ -71,6 +67,7 @@ defmodule SaturnWeb.Live.MissionControl do
         </div>
       </.form>
       <div
+        id="delete_destination"
         class="btn btn-dash btn-error m-8"
         phx-click="delete-destination"
         phx-value-id={@planet["planet_id"]}
@@ -124,7 +121,8 @@ defmodule SaturnWeb.Live.MissionControl do
       if result == :error or Decimal.lt?(elem(result, 0), Decimal.new("1")) do
         %{planet | "valid" => false}
       else
-        new_mass = elem(result, 0)
+        # rounding as extra safeguard, as we accept only integers
+        new_mass = result |> elem(0) |> Decimal.round(0, :floor)
         total_fuel = get_total_fuel(new_mass, new_destination, new_destination_type)
         planet = Map.put(%{planet | "valid" => true}, "mass", new_mass)
         Map.put(planet, "total_fuel", total_fuel)
