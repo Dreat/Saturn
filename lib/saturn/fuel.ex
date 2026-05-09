@@ -1,5 +1,14 @@
 defmodule Saturn.Fuel do
   @moduledoc """
+  A module to calculate needed fuel.
+
+  formula for landing: mass * gravity * 0.033 - 42
+  formula for launch: mass * gravity * 0.042 - 33
+
+  all results are rounded down to nearest integer
+
+  because fuel also has weight, to calculate total fuel needed for a trip
+  calculation needs to continue until result is <= 0
   """
 
   @landing_mult "0.033"

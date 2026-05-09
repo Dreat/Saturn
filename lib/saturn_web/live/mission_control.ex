@@ -114,7 +114,7 @@ defmodule SaturnWeb.Live.MissionControl do
     planet = Map.put(planet, "destination", new_destination)
     planet = Map.put(planet, "destination_type", new_destination_type)
 
-    result = Decimal.parse(equipment_mass) |> dbg()
+    result = Decimal.parse(equipment_mass)
 
     # if input is not a number or is less than 1
     planet =
@@ -148,9 +148,15 @@ defmodule SaturnWeb.Live.MissionControl do
   defp destination_to_atom("earth"), do: :earth
   defp destination_to_atom("moon"), do: :moon
   defp destination_to_atom("mars"), do: :mars
+  # default to Earth, normally would ask Business
+  # about required/expected behaviour
+  defp destination_to_atom(_), do: :earth
 
   defp destination_type_to_atom("land"), do: :land
   defp destination_type_to_atom("launch"), do: :launch
+  # default to launch, normally would ask Business
+  # about required/expected behaviour
+  defp destination_type_to_atom(_), do: :launch
 
   # total fuel for one destination
   defp get_total_fuel(mass, destination, destination_type) do
