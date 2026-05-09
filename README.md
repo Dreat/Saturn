@@ -39,7 +39,7 @@ Frontend:
 - because `render` is quite small and compact, I decided to leave it in main file. Usually I move it to separate file if it grows too much
 - `render_destination` seems like a good candidate for a `LiveComponent`, but I'd only extract it there if:
   1. More views would use it
-  2. It would grown significantly
+  2. It would grow significantly
 
 
 ## Possible improvements/future development
