@@ -17,7 +17,8 @@ defmodule SaturnWeb.Router do
   scope "/", SaturnWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    # for ths app we don't need more routes
+    live "/", Live.MissionControl
   end
 
   # Other scopes may use custom stacks.

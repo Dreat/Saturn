@@ -60,7 +60,8 @@ defmodule Saturn.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
-      {:decimal, "~> 2.0"}
+      {:decimal, "~> 2.0"},
+      {:uuid, "~> 1.1"}
     ]
   end
 
